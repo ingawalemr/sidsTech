@@ -34,7 +34,7 @@
 </div>
 <br>
 <div class="row">
-    <div class="col-md-8" style="padding-left:100px;">
+    <div class="col-md-8" style="padding-left:130px;">
         <p>If you have Not having Account? SIGN UP </p>
     </div>
 </div> 
