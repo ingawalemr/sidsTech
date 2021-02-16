@@ -85,6 +85,7 @@
  <?= $this->renderSection('contact') ?>
  <?= $this->renderSection('login') ?>
  <?= $this->renderSection('crud') ?>
+ <?= $this->renderSection('signUp') ?>
   <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="container">

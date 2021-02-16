@@ -4,12 +4,11 @@
 
 <!-- <h2 class="card" style="backgorund-color=red;">CRUD Application</h2> -->
 <h2 class="pt-3">CRUD Application</h2>
+    <div class="header">
+        <h2>Login Here</h2>
+    </div>
 
-<div class="container" >
-  <h2>Login Here</h2>
-  <div class="row">
-    <div class="col-md-6">
-        <form action="">
+    <form action="">
             <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
@@ -24,20 +23,10 @@
             </label>
             </div>
             <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
-    </div>
-    <div class="col-md-6">
-        <p> SIGN IN with facebook/Gmail</p>
-    </div>
-  </div>
-  
-</div>
+    </form>
 <br>
-<div class="row">
-    <div class="col-md-8" style="padding-left:130px;">
-        <p>If you have Not having Account? SIGN UP </p>
-    </div>
-</div> 
+
+    <p style="padding-left:150px;">If you have Not having Account? <a href="<?php echo base_url('CrudController/signUp'); ?>">SIGN UP</a> &nbsp;&nbsp;&nbsp; SIGN IN with facebook/Gmail </p>
 
  <?= $this->endsection('crud') ?>
 

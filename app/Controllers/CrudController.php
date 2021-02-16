@@ -9,9 +9,9 @@ class CrudController extends BaseController
 		return view('crud/crudPage');
 	}
 
-	public function about()
+	public function signUp()
 	{
-		return view('aboutus');
+		return view('crud/signUp');
 	}
 
 	
