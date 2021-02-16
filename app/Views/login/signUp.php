@@ -34,7 +34,7 @@
   	  <button type="submit" class="btn" name="reg_user">Register</button>
   	</div>
   	<p>
-  		Already a member? <a href="<?php echo base_url('CrudController'); ?>">Sign in</a>
+  		Already a member? <a href="<?php echo base_url('LoginController/login'); ?>">Sign in</a>
   	</p>
   </form>
 </body>
