@@ -38,6 +38,7 @@ $routes->get('/user', 'UserController::index');
 $routes->set404Override(function(){
 	return view('errorPage');
 });
+//$routes->post('/create', 'CrudController::create');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
