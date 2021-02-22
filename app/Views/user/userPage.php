@@ -1,25 +1,30 @@
 <?= $this->extend('index') ?>
 
 <?= $this->section('userPage') ?>
-   <!-- ======= Intro Section ======= -->
-  <section id="intro">
 
-    <div class="intro-content">
-      <h2>Making <span>your ideas</span><br>happen!</h2>
-      <div>
-        <a href="#" class="btn-get-started scrollto">Get Started</a>
-        <a href="#" class="btn-projects scrollto">Our Projects</a>
-      </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 mb-3 bg-dark text-white text-center">
+      Single Image Upload
     </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-6 mb-3">
+      <label>Select Image : </label>
+      <form method="post" enctype="multipart/form-data" action="<?php echo base_url('UserController/upload'); ?>">
+        <input class="file" id="photo" name="photo" type="file" class="form-control"><br><br>
 
-    <div id="intro-carousel" class="owl-carousel">
-      <div class="item" style="background-image: url('assets/img/intro-carousel/1.jpg');"></div>
-      <div class="item" style="background-image: url('assets/img/intro-carousel/2.jpg');"></div>
-      <div class="item" style="background-image: url('assets/img/intro-carousel/3.jpg');"></div>
-      <div class="item" style="background-image: url('assets/img/intro-carousel/4.jpg');"></div>
-      <div class="item" style="background-image: url('assets/img/intro-carousel/5.jpg');"></div>
+        <!-- Error -->
+        <?php
+        if (isset($validation) && $validation->hasError('photo')) { ?>
+          <div class='alert alert-danger mt-2'>
+            <?php echo $validation->getError('photo'); ?>
+          </div>
+        <?php   } ?>
+        <input type="submit" name="upload" value="upload">
+      </form>
     </div>
+  </div>
+  <br><br>
 
-  </section><!-- End Intro Section -->
- <br><br>
-<?= $this->endSection() ?>
+  <?= $this->endSection() ?>

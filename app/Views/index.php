@@ -72,7 +72,7 @@
         <li><a href="<?php echo base_url()?>/UserController/about">About Us</a></li>
         <li><a href="<?php  echo base_url('UserController/contact');?>">Contact Us</a></li> 
         <li><a href="<?php echo base_url('CrudController/index');?>">CRUD</a></li>
-        <li><a href="<?php echo base_url('LoginController/login');?>">Login</a></li>
+        <li><a href="<?php echo base_url('LoginController/index');?>">Login</a></li>
         </ul>
       </nav><!-- #nav-menu-container -->
     </div>
@@ -86,6 +86,9 @@
  <?= $this->renderSection('login') ?>
  <?= $this->renderSection('crud') ?>
  <?= $this->renderSection('signUp') ?>
+ <?= $this->renderSection('Homepage') ?>
+
+ 
   <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="container">

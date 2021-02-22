@@ -50,6 +50,15 @@
             }
         ?>
     </div> 
+    <div class="form-group">
+    <label for="email">Location</label>
+        <input type="text" class="form-control <?php echo (isset($validation) && $validation->hasError('destination_name')) ? 'is-invalid' : '' ?>" id="destination_name" name="destination_name" placeholder="Select  Location" value="<?php echo set_value('destination_name', $book['destination_name'])?>" >
+        <?php
+            if (isset($validation) && $validation->hasError('destination_name')) {
+                echo "<p class='invalid-feedback'>".$validation->getError('destination_name')."</p>";
+            }
+        ?>
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
  </form>
 </div>
@@ -61,5 +70,26 @@
     </div>
 </div>
 
+<!-- search by loaction script -->
+<script type="text/javascript">
+  function destinationBySearch() {
+    var destination_name = $("#destination_name").val();
+      if (destination_name) {
+        window.location.href="<?php echo base_url('UserController') ?>"+ btoa(destination_name);
+      } else {
+        window.location.href='<?php echo base_url('UserController') ?>';
+      }
+    }
+  </script>
+
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyA-WodmP1JT1rDgPv3L2WPCMjvms4oNwfQ" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function initialize() {
+           var input = document.getElementById('destination_name');
+           var autocomplete = new google.maps.places.Autocomplete(input);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
  <?= $this->endsection('crud') ?>
 

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Models\BookModel;
 use CodeIgniter\Controller;
 
@@ -8,13 +10,17 @@ class CrudController extends BaseController
 	public function index()
 	{
 		$session = \Config\Services::session();
-		
-		// dislpay records
 		$model = new BookModel();
-		$books = $model->orderBy('id','DESC')->findAll();
-		$data['books'] = $books;
-
-		$data['session'] = $session;
+		if (!empty($this->request->getGet('q'))) { //pagination
+			$q = $this->request->getGet('q');
+			$query = $model->Like('title', $q)->findAll(); //pass this query in view page
+			$data['query'] = $query;
+			return view('crud/crudPage', $data);
+		} else {
+			$books = $model->orderBy('id', 'DESC')->findAll(); // dislpay (fetch) records
+			$data['books'] = $books;
+			$data['session'] = $session;
+		}
 		return view('crud/crudPage', $data);
 	}
 
@@ -23,42 +29,50 @@ class CrudController extends BaseController
 		//  insert records
 		$session = \Config\Services::session();
 		helper('form');
-		$data=[];
-		if ($this->request->getMethod()=='post') {
-			$input = $this->validate([ 
+		$data = [];
+		if ($this->request->getMethod() == 'post') {
+			$input = $this->validate([
 				# code validation 
-				'title'=>'trim|required|min_length[5]',
-				'author'=>'trim|required|min_length[5]',
-				'isbn'=>'trim|required|min_length[5]|integer',
-				'mobile'=>'trim|required|numeric|is_unique[books.mobile]|max_length[10]|min_length[10]',
+				'title' => 'trim|required|min_length[5]',
+				'author' => 'trim|required|min_length[5]',
+				'isbn' => 'trim|required|min_length[5]|integer',
+				'mobile' => 'trim|required|numeric|is_unique[books.mobile]|max_length[10]|min_length[10]',
+				'destination_name' => 'trim|required',
+				'photo' => 'uploaded[photo]|max_size[photo,2024]|ext_in[photo,jpg,jpeg,png],'
 			]);
-			
+
 			if ($input == 'true') {
 				# code validation success.Save to DB
 				$model = new BookModel();
+				if ($image = $this->request->getFile('photo')) { // image upload
 				$model->save([
 					'title' => $this->request->getPost('title'),
 					'isbn' =>  $this->request->getPost('isbn'),
 					'author' =>  $this->request->getPost('author'),
 					'mobile' =>  $this->request->getPost('mobile'),
+					'destination_name' =>  $this->request->getPost('destination_name'),
+					'photo' =>  $this->request->getFile('photo'),
 				]);
+					
+				$image->move('./public/assets/img', $image->getRandomName());
 				$session->setFlashdata('success', 'record added successfully');
 				return redirect()->to('/CrudController/index');
+				}
 			} else {
 				# validation code error...
-				$data['validation']= $this->validator;
+				$data['validation'] = $this->validator;
 			}
 		}
-		
+
 		return view('crud/create', $data);
 	}
-	
+
 	public function edit($id)
-	{	
+	{
 		// Fetch record as per selected id
 		$session = \Config\Services::session();
 		helper('form');
-		$data=[];
+		$data = [];
 
 		$model = new BookModel(); // select * from table where id=$id;
 		$book = $model->where('id', $id)->first();		//print_r($book);
@@ -70,15 +84,16 @@ class CrudController extends BaseController
 		$data['book'] = $book;
 
 		// update records as per selected id
-		if ($this->request->getMethod()=='post') {
-			$input = $this->validate([ 
+		if ($this->request->getMethod() == 'post') {
+			$input = $this->validate([
 				# code validation 
-				'title'=>'trim|required|min_length[5]',
-				'author'=>'trim|required|min_length[5]',
-				'isbn'=>'trim|required|min_length[5]|integer',
-				'mobile'=>'trim|required|numeric|is_unique[books.mobile]|max_length[10]|min_length[10]',
+				'title' => 'trim|required|min_length[5]',
+				'author' => 'trim|required|min_length[5]',
+				'isbn' => 'trim|required|min_length[5]|integer',
+				'mobile' => 'trim|required|numeric|is_unique[books.mobile]|max_length[10]|min_length[10]',
+				'destination_name' => 'trim|required',
 			]);
-			
+
 			if ($input == 'true') {
 				# code validation success.Save to DB
 				$model = new BookModel();
@@ -87,15 +102,16 @@ class CrudController extends BaseController
 					'isbn' =>  $this->request->getPost('isbn'),
 					'author' =>  $this->request->getPost('author'),
 					'mobile' =>  $this->request->getPost('mobile'),
+					'destination_name' =>  $this->request->getPost('destination_name'),
 				]);
 				$session->setFlashdata('success', 'record updated successfully');
 				return redirect()->to('/CrudController/index');
 			} else {
 				# validation code error...
-				$data['validation']= $this->validator;
+				$data['validation'] = $this->validator;
 			}
 		}
-		
+
 		return view('crud/edit', $data);
 	}
 
@@ -103,7 +119,7 @@ class CrudController extends BaseController
 	{
 		// Fetch record as per selected id
 		$session = \Config\Services::session();
-		
+
 		$model = new BookModel(); // select * from table where id=$id;
 		$book = $model->where('id', $id)->first();		//print_r($book);
 		if (empty($book)) {
@@ -116,7 +132,5 @@ class CrudController extends BaseController
 		$model->delete($id);
 		$session->setFlashdata('success', 'record deleted successfully');
 		return redirect()->to('/CrudController/index');
-		
 	}
-	
 }

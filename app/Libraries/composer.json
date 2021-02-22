@@ -1,0 +1,13 @@
+{
+    "name": "google/login",
+    "description": "google login in ci4",
+    "authors": [
+        {
+            "name": "mahadev ingawale",
+            "email": "ingawalemr12@gmail.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "2.0"
+    }
+}

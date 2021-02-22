@@ -7,10 +7,8 @@ class BookModel extends Model{
     
     //protected $db;
     protected $table = 'books';
-    protected $allowedFields = ['title', 'isbn', 'author','mobile'];
+    protected $allowedFields = ['title', 'isbn', 'author','mobile','destination_name','photo'];
 
     protected $createdField = 'created_at';
    // protected $updatedField = 'updated_at';
 }
-
-?>

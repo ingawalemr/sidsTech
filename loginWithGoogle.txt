@@ -1,0 +1,392 @@
+I am doing "Login with google ", but unfortunately my code is not working, a could not find where is the error and what type of problem is occuring. So Please help me, for executing the code
+
+
+<?php
+
+namespace App\Controllers;
+use CodeIgniter\Controller;
+use App\Models\UserModel;
+
+class LoginController extends BaseController
+{
+	public function __construct() {
+		helper(['form','url']);
+		$this->UserModel = new UserModel();
+		$session = \Config\Services::session();
+	}
+	public function index()
+	{
+		return view('login/login');
+	}
+    
+	public function loginWithGoogle()
+	{
+		$session = \Config\Services::session();
+		helper(['form','url']);
+		
+		include_once APPPATH . "libraries/vendor/autoload.php";
+		$google_client = new \Google_Client();	//$google_client = new Google_Client();//object
+		$google_client->setClientId('533341713562-jmkn04ujg3395pfnklduig8gkbtt6p0e.apps.googleusercontent.com'); //Define your ClientID
+		$google_client->setClientSecret('JA7LsDh-vBhR4zO34Of7TIIe'); //Define Client Secret Key
+				
+		$google_client->setRedirectUri(base_url().'/LoginController/loginWithGoogle'); 
+		$google_client->addScope('email');
+	   	$google_client->addScope('profile');
+			
+			
+		
+		if($this->request->getVar('code')){
+		{ 
+			$token= $google_client->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
+			if(!isset($token['error'])) 
+			{
+				$google_client->setAccessToken($token['access_token']);
+				$this->session->set('access_token', $token['access_token']);
+				
+				$google_service = new \Google_Service_Oauth2($google_client);//object->profile data
+			  	$gdata = $google_service->userinfo->get();
+		
+				if($this->UserModel->Is_already_register($gdata['id']))
+					{
+						//update data
+						$user_data = array(
+						'username' => $dgdataata['username'],
+						'email' => $gdata['email'],
+						'pass'=> $gdata['pass'],
+						'Cpass'=> $gdata['Cpass'],
+						);
+						$this->UserModel->Update_user_data($user_data, $gdata['id']);
+					}
+				else
+					{
+						//insert data
+						$user_data = array(
+						'oauth_id' => $gdata['id'],
+						'username' => $gdata['username'],
+						'email' => $gdata['email'],
+						'pass'=> $gdata['pass'],
+						'Cpass'=> $gdata['Cpass'],
+						);
+						
+						$this->UserModel->Insert_user_data($user_data);
+					}
+					$this->session->set('user_data', $user_data);
+					return redirect()->to('/LoginController/home');
+			}
+		}
+		if (!$this->session->get('access_token')) {
+			$gdata['loginButton'] = $google_client->createAuthUrl();
+		}
+		return view('login/login', $gdata);
+	}
+    
+    public function login()
+	{
+		$model = new UserModel();
+		$email =  $this->request->getVar('email'); //fetch email from table
+		$login = $model->where('email', $email)->first();	
+		
+		if ($login !=null) { // login process
+			if ($login['pass'] == $this->request->getVar('pass')) 
+			{
+				//echo "welcome ".$login['username'];
+
+				$session = \Config\Services::session(); //or $session = session();
+				$session->set('admin', $login['username']); //set session on about us page
+				
+				$session->setFlashdata('msg', 'Login successfully');	//show session flashdata
+				return redirect()->to('/LoginController/home');
+			}
+			else
+			{	 
+				$session = \Config\Services::session($config);
+				$session->setFlashdata('fail', 'Login failed, please check either email or password is incorrect');	//show session flashdata
+				return view('login/login');
+			}
+		} 
+		else
+		{
+			return view('login/login');
+		}
+	}
+
+	public function home()
+	{
+		$session = session();
+		if ($session->has('admin')) {
+			return view('login/home');
+		} else {
+			return redirect()->to('/LoginController/login');// or return view('login/login');
+		}
+		
+	}
+}
+...................model
+
+<?php
+namespace App\Models;
+
+use CodeIgniter\Model;
+
+class UserModel extends Model
+{
+    protected $table = 'user';
+    protected $allowedFields = ['username', 'email', 'pass','Cpass'];
+    protected $createdField = 'created_at';
+}               
+
+function Is_already_register($id)
+{
+    $query = $this->db->table('user');
+    $query->where('oauth_id', $id);
+    if($query->countAllResults() == 1)
+    {
+    return true;
+    }    else    {
+    return false;
+    }
+}
+
+function Update_user_data($data, $id)
+ {
+    $query = $this->db->table('user');
+    $query->where('oauth_id', $id);
+    $query->update($data);
+    if($this->db->affectedRows() == 1)
+    {
+    return true;
+    }    else    {
+    return false;
+    }
+ }
+
+ function Insert_user_data($data)
+ {
+    $query = $this->db->table('user');
+    $query->insert($data);
+    if($this->db->affectedRows() == 1)
+    {
+    return true;
+    }    else    {
+    return false;
+    }
+ }
+
+?>
+
+.......view
+
+<?php if (!isset($loginButton)) : ?>
+           <a href="<?= $loginButton; ?>" class="btn btn-block btn-danger">Sign in using Google+
+            <i class="fa fa-google-plus "></i>  </a>
+            <?php endif;?>
+
+
+
+
+
+
+"Login with google  in codeIgniter 4",I could not find where is the error and what type of problem is occuring
+
+
+
+    
+
+
+
+```
+
+    **model**: i think , In model changes does not required
+
+    <?php
+    namespace App\Models;
+    
+    use CodeIgniter\Model;
+    
+    class UserModel extends Model
+    {
+        protected $table = 'user';
+        protected $allowedFields = ['username', 'email', 'pass','Cpass'];
+        protected $createdField = 'created_at';
+    }               
+    
+    function Is_already_register($id)
+    {
+        $query = $this->db->table('user');
+        $query->where('oauth_id', $id);
+        if($query->countAllResults() == 1)
+        {
+        return true;
+        }    else    {
+        return false;
+        }
+    }
+    
+    function Update_user_data($data, $id)
+     {
+        $query = $this->db->table('user');
+        $query->where('oauth_id', $id);
+        $query->update($data);
+        if($this->db->affectedRows() == 1)
+        {
+        return true;
+        }    else    {
+        return false;
+        }
+     }
+    
+     function Insert_user_data($data)
+     {
+        $query = $this->db->table('user');
+        $query->insert($data);
+        if($this->db->affectedRows() == 1)
+        {
+        return true;
+        }    else    {
+        return false;
+        }
+     }
+    
+    ?>
+
+```
+
+```
+**view**: here, for conditional statement getting issue i.e $loginButton, when i click Sign in with google, it redirect on the same page(view page);
+
+    <?php if (!isset($loginButton)) : ?>
+               <a href="<?= $loginButton; ?>" class="btn btn-block btn-danger">Sign in using Google+
+                <i class="fa fa-google-plus "></i>  </a>
+                <?php endif;?>
+
+```
+
+```
+**controller**: with login.php view, controller configuration are not matching elsewhere, i think, the chages required at $google_client->setRedirectUri(base_url().'/LoginController/loginWithGoogle'); variable.please help.
+
+<?php
+
+namespace App\Controllers;
+use CodeIgniter\Controller;
+use App\Models\UserModel;
+
+class LoginController extends BaseController
+{
+	public function __construct() {
+		helper(['form','url']);
+		$this->UserModel = new UserModel();
+		$session = \Config\Services::session();
+	}
+	public function index()
+	{
+		return view('login/login');
+	}
+    
+    public function loginWithGoogle()
+    	{
+    		$session = \Config\Services::session();
+    		helper(['form','url']);
+    		
+    		include_once APPPATH . "libraries/vendor/autoload.php";
+    		$google_client = new \Google_Client();	
+    		$google_client->setClientId('533341713562-jmkn04ujg3395pfnklduig8gkbtt6p0e.apps.googleusercontent.com'); 
+    		$google_client->setClientSecret('JA7LsDh-vBhR4zO34Of7TIIe'); 
+    		$google_client->setRedirectUri(base_url().'/LoginController/loginWithGoogle'); 
+    		$google_client->addScope('email');
+    	   	$google_client->addScope('profile');
+    			
+    		if($this->request->getVar('code')){
+    		{ 
+    			$token= $google_client->fetchAccessTokenWithAuthCode($this->request->getVar('code'));
+    			if(!isset($token['error'])) 
+    			{
+    				$google_client->setAccessToken($token['access_token']);
+    				$this->session->set('access_token', $token['access_token']);
+    				
+    				$google_service = new \Google_Service_Oauth2($google_client);
+    			  	$gdata = $google_service->userinfo->get();
+    		
+    				if($this->UserModel->Is_already_register($gdata['id']))
+    					{
+    						//update data
+    						$user_data = array(
+    						'username' => $dgdataata['username'],
+    						'email' => $gdata['email'],
+    						'pass'=> $gdata['pass'],
+    						'Cpass'=> $gdata['Cpass'],
+    						);
+    						$this->UserModel->Update_user_data($user_data, $gdata['id']);
+    					}
+    				else
+    					{
+    						//insert data
+    						$user_data = array(
+    						'oauth_id' => $gdata['id'],
+    						'username' => $gdata['username'],
+    						'email' => $gdata['email'],
+    						'pass'=> $gdata['pass'],
+    						'Cpass'=> $gdata['Cpass'],
+    						);
+    						
+    						$this->UserModel->Insert_user_data($user_data);
+    					}
+    					$this->session->set('user_data', $user_data);
+    					return redirect()->to('/LoginController/home');
+    			}
+    		}
+    		if (!$this->session->get('access_token')) {
+    			$gdata['loginButton'] = $google_client->createAuthUrl();
+    		}
+    		return view('login/login', $gdata);
+    	}
+    
+        public function login()
+    	{
+    		$model = new UserModel();
+    		$email =  $this->request->getVar('email');
+    		$login = $model->where('email', $email)->first();	
+    		
+    		if ($login !=null) { 
+    			if ($login['pass'] == $this->request->getVar('pass')) 
+    			{
+    				//echo "welcome ".$login['username'];
+    
+    				$session = \Config\Services::session(); 
+    				$session->set('admin', $login['username']);
+    				
+    				$session->setFlashdata('msg', 'Login successfully');	
+    				return redirect()->to('/LoginController/home');
+    			}
+    			else
+    			{	 
+    				$session = \Config\Services::session($config);
+    				$session->setFlashdata('fail', 'Login failed, please check either email or password is incorrect');	//show session flashdata
+    				return view('login/login');
+    			}
+    		} 
+    		else
+    		{
+    			return view('login/login');
+    		}
+    	}
+    
+    	public function home()
+    	{
+    		$session = session();
+    		if ($session->has('admin')) {
+    			return view('login/home');
+    		} else {
+    			return redirect()->to('/LoginController/login');// or return view('login/login');
+    		}
+    		
+    	}
+    }
+
+```
+    
+
+
+
+
+
+
