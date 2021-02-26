@@ -60,7 +60,6 @@ class UserController extends BaseController
 				$email->setCC('ingawalemr12@gmail.com');
 				$email->setBCC('ingawalemr12@gmail.com');
 
-
 				$name = $this->request->getPost('name');
 				$mail = $this->request->getPost('email');
 				$sub = $this->request->getPost('subject');
@@ -86,7 +85,5 @@ class UserController extends BaseController
 
 	return view('user/contactus');
 	}
-
-
 }
 ?>
