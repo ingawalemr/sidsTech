@@ -39,6 +39,13 @@ $routes->set404Override(function(){
 	return view('errorPage');
 });
 //$routes->post('/create', 'CrudController::create');
+
+// image upload start
+$routes->get('/image', 'ImageController::index');
+$routes->get('/image/create', 'ImageController::create');
+$routes->post('image-store', 'ImageController::store');
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

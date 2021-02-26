@@ -68,11 +68,12 @@
 
       <nav id="nav-menu-container">
         <ul class="nav-menu">
-        <li class="menu-active"><a href="<?php echo base_url()?>/UserController">Home</a></li>
+        <li><a href="<?php echo base_url()?>/UserController">Home</a></li>
         <li><a href="<?php echo base_url()?>/UserController/about">About Us</a></li>
         <li><a href="<?php  echo base_url('UserController/contact');?>">Contact Us</a></li> 
         <li><a href="<?php echo base_url('CrudController/index');?>">CRUD</a></li>
         <li><a href="<?php echo base_url('LoginController/index');?>">Login</a></li>
+        <li><a href="<?php echo base_url('/image');?>">ImageUp</a></li> 
         </ul>
       </nav><!-- #nav-menu-container -->
     </div>
@@ -87,7 +88,7 @@
  <?= $this->renderSection('crud') ?>
  <?= $this->renderSection('signUp') ?>
  <?= $this->renderSection('Homepage') ?>
-
+ <?= $this->renderSection('imageUploadDB') ?>
  
   <!-- ======= Footer ======= -->
   <footer id="footer">
