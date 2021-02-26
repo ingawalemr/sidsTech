@@ -59,6 +59,15 @@
             }
         ?>
     </div>
+    <div class="form-group">
+    <label for="email">Select Image</label>
+        <input type="file" id="photo" name="photo" class=" <?php echo (isset($validation) && $validation->hasError('photo')) ? 'is-invalid' : '' ?>" value="" >
+        <?php
+            if (isset($validation) && $validation->hasError('photo')) {
+                echo "<p class='invalid-feedback'>".$validation->getError('photo')."</p>";
+            }
+        ?>
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
  </form>
 </div>

@@ -39,13 +39,54 @@ class UserController extends BaseController
 		return view('user/aboutus');
 	}
 
-	public function contact()
+		public function contact()
 	{
-		return view('user/contactus');
+		$data = [];
+		$session = session();
+
+		if ($this->request->getMethod()=='post') {
+			$input = $this->validate([
+					'name' => 'trim|required',
+					'email' => 'trim|required|valid_email',
+					'subject' => 'trim|required|min_length[10]|max_length[100]',
+				]);
+
+			if ($input == 'true') {
+				# email send code here...
+				$email = \Config\Services::email();
+				$email->setFrom('ingawalemr12@gmail.com', 'sidsTech Digital');
+			//$email->setFrom('you@example.com', 'Your Name', 'returned_emails@example.com');
+				$email->setTo('ingawalemr12@yahoo.com');
+				$email->setCC('ingawalemr12@gmail.com');
+				$email->setBCC('ingawalemr12@gmail.com');
+
+
+				$name = $this->request->getPost('name');
+				$mail = $this->request->getPost('email');
+				$sub = $this->request->getPost('subject');
+				$msg = $this->request->getPost('message');
+				
+				$message = "Name : ".$name."<br>";
+				$message .= "Email-id : ".$mail."<br>";
+				$message .= "Message Given : ".$msg."<br>";
+
+				$email->setSubject($sub);
+				$email->setMessage($message);
+				$email->send();
+
+				$session->setFlashdata('success','Thanks, message has been sent successfully');
+				return redirect()->to('/UserController/contact');
+
+			} else {
+				# error code here
+				$data['validation'] = $this->validator;
+      			return view('user/contactus', $data);
+			}
+		}
+
+	return view('user/contactus');
 	}
 
-	public function login()
-	{
-		return view('user/login');
-	}
+
 }
+?>

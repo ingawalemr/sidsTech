@@ -74,7 +74,17 @@
             <th><?php echo $book['isbn'] ; ?></th>
             <th><?php echo $book['mobile'] ; ?></th>
             <th><?php echo $book['destination_name'] ; ?></th>
-            <th><img src="<?php echo base_url().'./public/assets/img/'.$book['photo'] ?>" alt="" width="20" heigth="20" class="w-100"></th>
+            <th><!-- <img src="<?php //echo base_url().'./public/assets/img/'.$book['photo'] ?>" alt="" width="100" heigth="100"> -->
+                <?php
+                 $path = './public/assets/img/'.$book['photo'];
+                if ($book['photo'] !="" && file_exists($path)) { ?>
+
+                    <img src="<?php echo base_url().'./public/assets/img/'.$book['photo'] ?>" alt="" width="100" heigth="100">
+                <?php } else {  ?>
+                    
+                    <img src="<?php echo base_url().'./public/assets/img/no_image.jpg' ?>" alt="" width="100" heigth="100">
+                <?php } ?>
+            </th>
             <th>
                 <a href="<?php echo base_url('CrudController/edit/'.$book['id']); ?>" class="btn btn-success btn-sm">Edit</a>
                
@@ -91,6 +101,9 @@
         
     </table>
   </div>
+    <div class="row pl-5">
+          <?php echo $pager->links(); ?>
+    </div>
 </div>
 <br>
 

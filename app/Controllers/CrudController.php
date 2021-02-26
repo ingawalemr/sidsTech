@@ -9,15 +9,18 @@ class CrudController extends BaseController
 {
 	public function index()
 	{
+		$pager = \Config\Services::pager();//pagination
 		$session = \Config\Services::session();
 		$model = new BookModel();
 		if (!empty($this->request->getGet('q'))) { //pagination
 			$q = $this->request->getGet('q');
 			$query = $model->Like('title', $q)->findAll(); //pass this query in view page
+			$data = ['users' => $model->paginate(3), 'pager' => $model->pager];//pagination
 			$data['query'] = $query;
 			return view('crud/crudPage', $data);
 		} else {
 			$books = $model->orderBy('id', 'DESC')->findAll(); // dislpay (fetch) records
+			$data = ['users' => $model->paginate(3), 'pager' => $model->pager];//pagination
 			$data['books'] = $books;
 			$data['session'] = $session;
 		}
@@ -45,16 +48,20 @@ class CrudController extends BaseController
 				# code validation success.Save to DB
 				$model = new BookModel();
 				if ($image = $this->request->getFile('photo')) { // image upload
+					if ($image->isValid() && ! $image->hasMoved())
+					{
+						$imageName = $image->getRandomName();
+						$image->move('./public/assets/img/', $imageName);
+					}
 				$model->save([
 					'title' => $this->request->getPost('title'),
 					'isbn' =>  $this->request->getPost('isbn'),
 					'author' =>  $this->request->getPost('author'),
 					'mobile' =>  $this->request->getPost('mobile'),
 					'destination_name' =>  $this->request->getPost('destination_name'),
-					'photo' =>  $this->request->getFile('photo'),
+					'photo' =>  $imageName,
 				]);
 					
-				$image->move('./public/assets/img', $image->getRandomName());
 				$session->setFlashdata('success', 'record added successfully');
 				return redirect()->to('/CrudController/index');
 				}
@@ -92,20 +99,37 @@ class CrudController extends BaseController
 				'isbn' => 'trim|required|min_length[5]|integer',
 				'mobile' => 'trim|required|numeric|is_unique[books.mobile]|max_length[10]|min_length[10]',
 				'destination_name' => 'trim|required',
+				'photo' => 'uploaded[photo]|max_size[photo,2024]'
 			]);
 
 			if ($input == 'true') {
-				# code validation success.Save to DB
+				# code validation success.Update to DB
 				$model = new BookModel();
+				if ($image = $this->request->getFile('photo')) 
+				{ // image upload
+					if ($image->isValid() && ! $image->hasMoved())
+					{
+						$imageName = $image->getRandomName();
+						$image->move('./public/assets/img/', $imageName);
+					}
+
 				$model->update($id, [
 					'title' => $this->request->getPost('title'),
 					'isbn' =>  $this->request->getPost('isbn'),
 					'author' =>  $this->request->getPost('author'),
 					'mobile' =>  $this->request->getPost('mobile'),
 					'destination_name' =>  $this->request->getPost('destination_name'),
+					'photo' =>  $imageName,
 				]);
+
+				// if (file_exists('./public/assets/img/'.$book['photo'])) 
+				// {
+				// 	unlink('./public/assets/img/'.$book['photo']);
+				// }
+
 				$session->setFlashdata('success', 'record updated successfully');
 				return redirect()->to('/CrudController/index');
+				}
 			} else {
 				# validation code error...
 				$data['validation'] = $this->validator;
@@ -130,7 +154,7 @@ class CrudController extends BaseController
 		// Delete record as per selected id
 		$model = new BookModel();
 		$model->delete($id);
-		$session->setFlashdata('success', 'record deleted successfully');
+		$session->setFlashdata('fail', 'Record deleted successfully');
 		return redirect()->to('/CrudController/index');
 	}
 }

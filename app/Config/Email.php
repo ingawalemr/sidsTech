@@ -33,7 +33,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $protocol = 'mail';//public $protocol = 'smtp';
+	public $protocol = 'smtp';//public $protocol = 'mail';
 
 	/**
 	 * The server path to Sendmail.
@@ -47,35 +47,35 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPHost;
+	public $SMTPHost ='smtp.gmail.com';
 
 	/**
 	 * SMTP Username
 	 *
 	 * @var string
 	 */
-	public $SMTPUser;
+	public $SMTPUser = 'ingawalemr12@gmail.com';
 
 	/**
 	 * SMTP Password
 	 *
 	 * @var string
 	 */
-	public $SMTPPass;
+	public $SMTPPass ='MywifeisPranjali@2021';
 
 	/**
 	 * SMTP Port
 	 *
 	 * @var integer
 	 */
-	public $SMTPPort = 25;
+	public $SMTPPort = 465;
 
 	/**
 	 * SMTP Timeout (in seconds)
 	 *
 	 * @var integer
 	 */
-	public $SMTPTimeout = 5;
+	public $SMTPTimeout = 30;//60
 
 	/**
 	 * Enable persistent SMTP connections
@@ -89,7 +89,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $SMTPCrypto = 'tls';
+	public $SMTPCrypto = 'ssl';
 
 	/**
 	 * Enable word-wrap
@@ -110,7 +110,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $mailType = 'text';
+	public $mailType = 'html';
 
 	/**
 	 * Character set (utf-8, iso-8859-1, etc.)
@@ -138,7 +138,7 @@ class Email extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $CRLF = "\r\n";
+	public $CRLF = "\r\n"; // multiple header can send
 
 	/**
 	 * Newline character. (Use “\r\n” to comply with RFC 822)
