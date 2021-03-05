@@ -89,6 +89,7 @@
  <?= $this->renderSection('signUp') ?>
  <?= $this->renderSection('Homepage') ?>
  <?= $this->renderSection('imageUploadDB') ?>
+ <?= $this->renderSection('addToCart') ?>
  
   <!-- ======= Footer ======= -->
   <footer id="footer">
