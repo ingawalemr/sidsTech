@@ -102,7 +102,14 @@
     </table>
   </div>
     <div class="row pl-5">
-          <?php echo $pager->links(); ?>
+          <!-- <?php //echo $pager->links(); ?> -->
+        <?php
+            if($pagination_link)
+            {
+                $pagination_link->setPath('CrudController');// setPath is optional here
+                echo $pagination_link->links();
+            }
+        ?>
     </div>
 </div>
 <br>

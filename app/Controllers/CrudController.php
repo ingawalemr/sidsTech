@@ -19,9 +19,14 @@ class CrudController extends BaseController
 			$data['query'] = $query;
 			return view('crud/crudPage', $data);
 		} else {
-			$books = $model->orderBy('id', 'DESC')->findAll(); // dislpay (fetch) records
-			$data = ['users' => $model->paginate(3), 'pager' => $model->pager];//pagination
-			$data['books'] = $books;
+			/* fetch data, pagination old has been created
+			 $books = $model->orderBy('id', 'DESC')->findAll(); // dislpay (fetch) records
+			 $data = ['users' => $model->paginate(3), 'pager' => $model->pager];//pagination
+			 $data['books'] = $books;
+			 $data['session'] = $session;
+			*/
+			$data['books'] = $model->orderBy('id', 'DESC')->paginate(5);
+			$data['pagination_link'] = $model->pager;
 			$data['session'] = $session;
 		}
 		return view('crud/crudPage', $data);
