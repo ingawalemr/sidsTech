@@ -90,6 +90,7 @@
  <?= $this->renderSection('Homepage') ?>
  <?= $this->renderSection('imageUploadDB') ?>
  <?= $this->renderSection('addToCart') ?>
+ <?= $this->renderSection('forgot_pass') ?>
  
   <!-- ======= Footer ======= -->
   <footer id="footer">

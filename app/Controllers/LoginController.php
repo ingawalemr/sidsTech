@@ -162,5 +162,37 @@ class LoginController extends BaseController
 		return view('login/signUp', $data);
 	}
     
-	
+	public function forgot_password()
+	{
+		$session = \Config\Services::session();
+		helper('form');
+		$data = [];
+
+		$model = new UserModel();
+		$data['book']= $model->where('id', $id)->first();	print_r($book);
+
+		if ($this->request->getMethod() == 'post' ) {
+			$input = $this->validate([
+				'pass'  => 'trim|required|min_length[5]|max_length[10]',
+				'Cpass'  => 'trim|required|matches[pass]',
+			]);
+
+			if ($input == 'true') {
+				$model = new UserModel();
+				$model->update($id, [
+					'pass' => $this->request->getPost('pass'),
+					'Cpass' =>  $this->request->getPost('Cpass'),
+				]);
+
+				$session->setFlashdata('success', 'Password updated successfully');
+				return redirect()->to('/LoginController/forgot_password');
+			} 
+			else
+			{	
+				$data['validation'] = $this->validator;
+			}
+		}
+
+		return view('login/forgot_passw_view', $data);
+	}
 }

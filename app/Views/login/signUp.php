@@ -8,13 +8,13 @@
    <link href="<?php echo base_url('public/assets/css/style.css') ?>" rel="stylesheet">
 </head>
 <body>
-  <div class="header class="pt-3"">
+  <div class="header">
   	<h2>Register</h2>
   </div>
 	
   <form method="post" action="<?php //echo base_url('LoginController/signUp'); ?>">
   	<div class="input-group">
-  	  <label>Username</label>
+  	  <label for="email">Username</label>
   	  <input type="text" name="username" value="" class="<?php echo (isset($validation) && $validation->hasError('username')) ? 'is-invalid' : ''?>">
 		<?php
 		if (isset($validation) && $validation->hasError('username')) {
@@ -24,7 +24,7 @@
 		?>
   	</div>
   	<div class="input-group">
-  	  <label>Email</label>
+  	  <label for="email">Email</label>
   	  <input type="email" name="email" value="" class="<?php echo (isset($validation) && $validation->hasError('email')) ? 'is-invalid' : ''?>">
 		<?php
 		if (isset($validation) && $validation->hasError('email')) {
@@ -33,7 +33,7 @@
 		?>
   	</div>
   	<div class="input-group">
-  	  <label>Password</label>
+  	  <label for="pwd">Password</label>
   	  <input type="password" name="pass" class="<?php echo (isset($validation) && $validation->hasError('pass')) ? 'is-invalid' : ''?>">
 		<?php
 		if (isset($validation) && $validation->hasError('pass')) {
@@ -41,7 +41,7 @@
 		} ?>
   	</div>
   	<div class="input-group">
-  	  <label>Confirm password</label>
+  	  <label for="pwd">Confirm password</label>
   	  <input type="password" name="Cpass" class="<?php echo (isset($validation) && $validation->hasError('Cpass')) ? 'is-invalid' : ''?>">
 		<?php
 		if (isset($validation) && $validation->hasError('Cpass')) {

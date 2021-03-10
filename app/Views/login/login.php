@@ -55,7 +55,11 @@
                     <input class="form-check-input" type="checkbox" name="view_password" id="view_password" onclick="myFunction()">Show Password
                 </label>
             </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
+            <button type="submit" class="btn btn-primary">Sign In</button> &nbsp;&nbsp;&nbsp;
+            
+            <a href="<?php echo base_url('LoginController/forgot_password'); ?>">
+                Forgot Password
+            </a>
             
             <p class="pt-2">If you have Not having Account? <a href="<?php echo base_url('LoginController/signUp'); ?>">SIGN UP</a></p>
             
