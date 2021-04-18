@@ -9,7 +9,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
-					<h4> Add Images
+					<h4>  Go Back
 					<a href="<?php echo base_url('/image'); ?>"  class="btn btn-danger btn-sm float-end">Back</a>
 					</h4>
 				</div>

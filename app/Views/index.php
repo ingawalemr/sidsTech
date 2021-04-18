@@ -91,7 +91,8 @@
  <?= $this->renderSection('imageUploadDB') ?>
  <?= $this->renderSection('addToCart') ?>
  <?= $this->renderSection('forgot_pass') ?>
- 
+ <?= $this->renderSection('imageUploadMulti') ?>
+ <?= $this->renderSection('videoUpload') ?>
   <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="container">

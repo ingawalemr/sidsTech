@@ -41,11 +41,15 @@ $routes->set404Override(function(){
 //$routes->post('/create', 'CrudController::create');
 
 // image upload start
-$routes->get('/image', 'ImageController::index');
-$routes->get('/image/create', 'ImageController::create');
+$routes->get('/image', 'ImageController::index'); // index page for image, video upload
+$routes->get('/image/create', 'ImageController::create');//Single Image Upload 
 $routes->post('image-store', 'ImageController::store');
 
+$routes->get('/image/createMultipleImg', 'ImageController::createMultipleImage');
+$routes->post('image-store-multi', 'ImageController::storeMultipleImg');//Multiple Image Upload
 
+$routes->get('/video/create', 'VideoController::index');//Video Upload 
+$routes->post('video-store', 'VideoController::storeVideo');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

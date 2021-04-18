@@ -82,5 +82,4 @@ function myFunction() {
   }
 }
 </script>
- <?= $this->endsection('crud') ?>
 
